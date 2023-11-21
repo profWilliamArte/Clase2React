@@ -1,8 +1,33 @@
 
+import { useState, useEffect } from "react";
+import Card from "./Card";
+const API='https://dummyjson.com/products/category/laptops';
 
 const Mlaptop = () => {
+  const [datos, setDatos] = useState([])
+  const getDatos = async () =>{
+    try {
+      const response = await fetch(API);
+      const data = await response.json();
+     // console.log(data)
+      setDatos(data.products);
+    } catch (error) {
+      console.error(error)
+    }
+  };
+  useEffect(()=>{
+    getDatos();
+  },[]);
   return (
-    <div>Mlaptop</div>
+    <div className="container">
+
+      <h1 className="text-center py-5">Laptops</h1>
+        <div className="row">
+            {datos && datos.map((productos)=>(
+              <Card productos={productos} key={productos.id}/>
+            ))}
+        </div>
+    </div>
   )
 }
 

@@ -1,8 +1,9 @@
+import Mtienda from "../components/Mtienda"
 
 
 const Tienda = () => {
   return (
-    <div>Tienda</div>
+    <Mtienda/>
   )
 }
 

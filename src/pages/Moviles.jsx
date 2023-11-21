@@ -1,8 +1,9 @@
+import Mmoviles from "../components/Mmoviles"
 
 
 const Moviles = () => {
   return (
-    <div>Moviles</div>
+    <Mmoviles/>
   )
 }
 

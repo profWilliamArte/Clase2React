@@ -22,7 +22,8 @@ const Header = () => {
     
           <Link  to="/Movil" className='nav-link'>Movil</Link>
           <Link href="#" to="/Laptop" className='nav-link'>Laptop</Link>
-          <NavDropdown title="Tienda" id="navbarScrollingDropdown">
+          <Link href="#" to="/Tienda" className='nav-link'>Tienda</Link>
+          <NavDropdown title="Categorias" id="navbarScrollingDropdown">
               <Link to="/ropa" className="dropdown-item">Ropa</Link>
               <Link to="/Otro" className="dropdown-item">Otro</Link>
             <NavDropdown.Item href="#">Something else here</NavDropdown.Item>
