@@ -1,15 +1,187 @@
-1) npm create vite@latest .
-2) npm install (ejecutar npm run dev)
-3) npm install react-bootstrap bootstrap
-4) npm install react-router-dom
-5) importar los archivos de bootstrap
-    import "bootstrap/dist/css/bootstrap.min.css";
-    import "bootstrap/dist/js/bootstrap.bundle.js"; (si usas react-bootstrap no hace falta)
-6) Limpiar proyecto
-    borrar el contenido de App.css e Index.css
-    eliminar la carpeta assets
-    limpiar el app.jsx
-7) Crear carpetas components y pages dentro de src 
-8) crear los componentes principales header, main, footer y aplicar (rafce)
-9) crear las paginas 
-10) 
+Segunda clase 
+Manejo de:
+react-router-dom, useState, useEffect, leer apis, renderizar apis
+
+
+
+1) Modificar el componente Header.jsx
+    import { Link } from 'react-router-dom';
+
+    <Nav.Link href="#home">Inicio</Nav.Link>
+        por 
+    <Link to="/Inicio" className="nav-link">Inicio</Link>
+
+2) Modificar App.jsx 
+    import { BrowserRouter, Route, Routes } from "react-router-dom";
+    <BrowserRouter>
+        <Header/>
+            <Routes>
+                <Route path="/Inicio" element={<Minicio/>} />
+                <Route path="/Movil" element={<Mmoviles/>} />
+                <Route path="/Laptop" element={<Mlaptop/>} />
+                <Route path="/Tienda" element={<Mtienda/>} />
+            </Routes>
+        <Footer/>
+    </BrowserRouter>
+
+3) Crear un componente Card.jsx
+
+4) Modificar Mlaptop.jsx
+    import { useState, useEffect } from "react";
+    import Card from "./Card";
+    const API='https://dummyjson.com/products/category/laptops';
+
+    
+    const [datos, setDatos] = useState([]);
+    useState: Es un hook de React para crear una variable de estado llamada datos y una función llamada setDatos para actualizar esa variable
+         
+        datos:  Es una variable de estado que almacena un array vacío inicialmente. 
+                Puedes utilizar esta variable para almacenar y acceder a los datos que necesites en tu componente.
+
+        setDatos: Es una función que se utiliza para actualizar el valor de la variable de estado datos. 
+                  Cuando llamas a setDatos con un nuevo valor, React se encarga de actualizar automáticamente 
+                  el estado y volver a renderizar el componente si es necesario.
+    
+    ***********************************************************************************************
+    const getDatos = async () =>{
+        try {
+            const response = await fetch(API);
+            const data = await response.json();
+            // console.log(data)
+            setDatos(data.products);
+        } catch (error) {
+            console.error(error)
+        }
+    };
+    La función getDatos  es una función asíncrona que realiza una solicitud a una API 
+    utilizando el método fetch de JavaScript. 
+    Aquí está una descripción de lo que hace esta función:
+
+    async: La función getDatos está marcada como async, lo que significa que se ejecutará de forma 
+    asíncrona y permitirá el uso de la palabra clave await dentro de ella.
+
+    try-catch: La función utiliza un bloque try-catch para manejar cualquier error 
+    que pueda ocurrir durante la solicitud a la API. Si se produce un error, 
+    se captura en el bloque catch y se muestra en la consola utilizando console.error.
+
+    fetch: Dentro del bloque try, se utiliza el método fetch para realizar una solicitud a la URL 
+    de la API almacenada en la constante API. 
+    El método fetch devuelve una promesa que se resuelve con la respuesta de la solicitud.
+
+    response.json(): Después de recibir la respuesta de la solicitud, 
+    se utiliza el método json() en la respuesta para extraer los datos en formato JSON. 
+    Este método también devuelve una promesa que se resuelve con los datos JSON.
+
+    setDatos: Finalmente, los datos obtenidos se establecen en el estado datos 
+    utilizando la función setDatos. 
+    Esto actualiza el estado del componente y desencadena una nueva renderización si es necesario.
+
+    ***************************************************
+    useEffect(()=>{
+        getDatos();
+    },[]);
+    Utiliza el hook useEffect de React para ejecutar la función getDatos 
+    cuando el componente se monta por primera vez.
+
+    useEffect: El hook useEffect se utiliza para realizar efectos secundarios en componentes funcionales de React. 
+    Se ejecuta después de que el componente se haya renderizado en el DOM.
+
+    () => { getDatos(); }: Esta es la función que se ejecutará como efecto secundario. En este caso, 
+    simplemente llama a la función getDatos.
+
+    []: El segundo argumento de useEffect es un array de dependencias. 
+    Al pasar un array vacío, le estamos diciendo a React que solo ejecute el efecto una vez, 
+    cuando el componente se monte por primera vez. 
+    Esto evita que el efecto se ejecute en cada renderizado del componente.
+
+    *****************************************************
+     {datos && datos.map((productos)=>(
+        <Card productos={productos} key={productos.id}/>
+    ))}
+    en este código se verifica si la variable datos tiene un valor y luego 
+    realiza un mapeo de los elementos en datos para renderizar un componente Card para cada elemento.
+
+    {datos && ...}: Esta parte verifica si la variable datos tiene un valor. 
+    Si datos es un valor truthy (es decir, no es null, undefined, false, 0 o una cadena vacía), 
+    entonces el código dentro del bloque se ejecutará.
+
+    Si datos tiene un valor, se realiza un mapeo de los elementos en datos utilizando el método map. 
+    Para cada elemento productos, se renderiza un componente Card con la propiedad productos establecida en el valor del elemento 
+    y la propiedad key establecida en el id del elemento. 
+    La función map devuelve un nuevo array con los componentes Card generados.
+
+    5) Crear un componente Detalle.jsx
+
+    6) Modificar Card.jsx
+
+    Este componente llamado Card es un componente de React que representa una tarjeta de producto. 
+    Aquí está una descripción de lo que hace este componente:
+
+    import { useState } from 'react';
+    Importa el hook useState de React, que se utiliza para gestionar el estado en componentes funcionales.
+
+    const Card = ({productos}) => { ... }: 
+    Declara el componente Card como una función de flecha que recibe un objeto productos como argumento. 
+    Este objeto contiene los datos del producto que se utilizarán para renderizar la tarjeta.
+
+    const [show, setShow] = useState(false);: 
+    Declara una variable de estado llamada show y una función para actualizarla llamada setShow. 
+    Inicialmente, el valor de show se establece en false. 
+    Esta variable de estado se utiliza para controlar la visibilidad de un componente llamado Detalle.
+
+    const handleClose = () => setShow(false);: 
+    Declara una función llamada handleClose que se utiliza para establecer el valor de show en false, lo que oculta el componente Detalle.
+
+    const handleShow = () => setShow(true);: 
+    Declara una función llamada handleShow que se utiliza para establecer el valor de show en true, lo que muestra el componente Detalle.
+
+    El resto del código representa la estructura y el contenido de la tarjeta de producto. 
+    Se utiliza JSX para renderizar elementos HTML y se utilizan las propiedades del objeto productos para mostrar los datos del producto, 
+    como la imagen, el título, la marca y el precio.
+
+    <Detalle show={show} handleClose={handleClose} productos={productos}/>: 
+    Renderiza el componente Detalle y pasa las propiedades show, handleClose y productos a ese componente.
+
+    export default Card;: Exporta el componente Card para que pueda ser utilizado en otros archivos.
+
+    En resumen, este componente Card representa una tarjeta de producto y utiliza el estado show y las 
+    funciones handleClose y handleShow para controlar la visibilidad de un componente Detalle. 
+    Cuando se hace clic en el botón "Detalle", se muestra el componente Detalle con los datos del producto correspondiente.
+
+    7) Modificar Detalle.jsx
+
+    El componente Detalle es un componente de React que representa una vista modal o de detalle para un producto. 
+    Aquí tienes una descripción de lo que hace este componente:
+
+    import Button from 'react-bootstrap/Button';: 
+    Importa el componente Button de la biblioteca React Bootstrap.
+
+    import Modal from 'react-bootstrap/Modal';: 
+    Importa el componente Modal de la biblioteca React Bootstrap.
+
+    import Badge from 'react-bootstrap/Badge';: 
+    Importa el componente Badge de la biblioteca React Bootstrap.
+
+    const Detalle = ({show, handleClose, productos}) => { ... }: 
+    Declara el componente Detalle como una función de flecha que recibe las propiedades show, handleClose y productos. 
+    Estas propiedades se utilizan para controlar la visibilidad de la modal y mostrar los detalles del producto.
+
+    const pv = parseFloat(productos.price - ((productos.price * productos.discountPercentage) / 100));: 
+    Calcula el precio con descuento del producto restando el porcentaje de descuento del precio original.
+
+    El resto del código representa la estructura y el contenido de la modal. 
+    El componente Modal de React Bootstrap se utiliza para crear la modal. 
+    Dentro de la modal, se muestran los detalles del producto utilizando JSX y las propiedades del objeto productos. 
+    El componente Badge se utiliza para mostrar la puntuación del producto.
+
+    <Modal show={show} onHide={handleClose} size="xl"> ... </Modal>: 
+    Renderiza el componente Modal con las propiedades show, onHide y size establecidas. 
+    La propiedad show controla la visibilidad de la modal, 
+    la propiedad onHide especifica la función que se llamará cuando se cierre la modal y la propiedad size establece el 
+    tamaño de la modal como extra grande.
+
+    <Button variant="secondary" onClick={handleClose}> ... </Button>: 
+    Renderiza un componente Button con la variante establecida en "secondary" 
+    y la propiedad onClick establecida en la función handleClose. Este botón se utiliza para cerrar la modal.
+
+    
